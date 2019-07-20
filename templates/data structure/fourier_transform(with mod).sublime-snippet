@@ -1,0 +1,74 @@
+<snippet>
+	<content><![CDATA[
+
+//---------------------------------------------------------------------------//
+
+typedef complex<ld> base;
+const ld PI = 4*atan(1);
+ll FFT_N=0;
+
+vector<base> omega;
+void init_fft(ll n)
+{
+    FFT_N = n;
+    omega.resize(n);
+    ld angle = 2*PI/n;
+    for(ll i=0;i<n;i++)
+    omega[i]=base(cos(i*angle), sin(i*angle));
+}
+
+void fft(vector<base> &a)
+{
+    if(a.size()==1)return;
+
+    ll n=a.size();
+    ll half=n>>1;
+    vector<base> even(half), odd(half);
+    for(ll i=0, j=0; i<n; i+=2, j++)
+    {
+        even[j]=a[i];
+        odd[j]=a[i+1];
+    }
+    fft(even);
+    fft(odd);
+    ll denominator=FFT_N/n;
+    for(ll i=0;i<half;i++)
+    {
+        base cur=odd[i] * omega[i*denominator];
+        a[i]=even[i] + cur;
+        a[i+half]=even[i] - cur;
+    }
+}
+
+void multiply(vector<ll> &a, vector<ll> &b, vector<ll> &res)
+{
+    vector<base> fa(a.begin(), a.end());
+    vector<base> fb(b.begin(), b.end());
+    ll n=1;
+    while(n<2*max(a.size(), b.size()))
+        n<<=1;
+    fa.resize(n);
+    fb.resize(n);
+    init_fft(n);
+    fft(fa);
+    fft(fb);
+    for(ll i=0;i<n;i++)
+        fa[i] = conj(fa[i] *  fb[i]);
+    fft(fa);
+    res.resize(n);
+    for(ll i=0;i<n;i++)
+    {
+        res[i]=(long long)(fa[i].real()/n + 0.5);
+        res[i]%=MOD;
+    }
+}
+
+//---------------------------------------------------------------------------//
+
+
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>__fft(with mod)</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

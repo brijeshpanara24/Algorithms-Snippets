@@ -1,0 +1,63 @@
+<snippet>
+	<content><![CDATA[
+
+//---------------------------------------------------------------------------//
+
+//return diameter of undirected graph
+struct diameter
+{
+    ll n;
+    vector<vector<ll> >adj;
+    
+    diameter(ll n):
+    n(n),adj(n) {}
+
+    void addEdge(ll u, ll v)
+    {
+        adj[u].pb(v);
+    }
+
+    pair<ll,ll> bfs(ll ver)
+    {
+        bool visited[n];
+        FOR(i,0,n)
+        visited[i]=false;
+
+        queue<pair<ll,ll> > q;
+        q.push(mp(ver,0));
+
+        pair<ll,ll> ans;
+        while(q.size()!=0)
+        {
+            pair<ll,ll> t = q.front();
+            q.pop();
+
+            if(visited[t.ff]==true)
+            continue;
+            visited[t.ff]=true;
+            
+            ans = t;
+            FOR(i,0,adj[t.ff].size())
+            q.push(mp(adj[t.ff][i],t.ss+1));
+        }
+
+        return ans;
+    }
+
+    pair<ll,pair<ll,ll> > dia()
+    {   
+        pair<ll,ll> t1 = bfs(0);
+        pair<ll,ll> t2 = bfs(t1.ff);
+        return mp(t2.ss,mp(t1.ff,t2.ff));
+    } 
+};
+
+//---------------------------------------------------------------------------//
+
+
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>__diameter</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

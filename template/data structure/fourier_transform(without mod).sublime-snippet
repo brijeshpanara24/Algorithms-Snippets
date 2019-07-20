@@ -1,0 +1,101 @@
+<snippet>
+	<content><![CDATA[
+
+//---------------------------------------------------------------------------//
+
+//vector<ll> a = a0 + a1*x + a2*x^2 + ..... + an*x^n
+//vector<ll> b = b0 + b1*x + b2*x^2 + ..... + bm*x^m
+typedef complex<double> base;
+const double PI = acos(-1.0);
+vector<ll> order;
+
+void precalc (ll n, ll L)
+{
+    order.resize(n);
+    for(ll i=0;i<n;i++)
+    {
+        ll res = 0;
+        for(ll j=0; j<L; j++)
+        if(i&(1 << j))
+        res |= 1<<(L-j-1);
+        order[i] = res;
+    }
+}
+
+void fft (vector<base> &a, bool invert)
+{
+    ll n = a.size();
+
+    for(ll i=0;i<n;i++)
+    if(order[i] < i)
+    swap(a[i], a[order[i]]);
+
+    for(ll len=2;len<=n;len<<=1)
+    {
+        ld ang = (2*PI)/(len*(invert?-1:1));
+        base wlen(cos(ang),sin(ang));
+        
+        ll half = len >> 1;
+        vector<base> w(half);
+        
+        base w0 (1);
+        for(ll i=0;i<half;i++)
+        w[i]=w0, w0*=wlen;
+        
+        for(ll i=0;i<n;i+=len)
+        {
+            for(ll j=0;j<half;j++)
+            {
+                base u = a[i+j];
+                base v = a[i+j+half]*w[j];
+                a[i+j] = u + v;
+                a[i+j+half] = u - v;
+            }
+        }
+    }
+
+    if(invert)
+    for(ll i=0;i<n;i++)
+    a[i] /= n;
+}
+
+vector<ll> multiply(vector<ll> a, vector<ll> b)
+{
+    ll n = 1;
+    ll L = 0;
+    while(a.size()+b.size()>n)
+    n <<= 1, L++;
+    
+    precalc (n, L);
+    
+    vector<base> fa(a.begin(), a.end());
+    fa.resize(n);
+    fft(fa,false);
+    
+    vector<base> fb(b.begin(), b.end());
+    fb.resize(n);
+    fft(fb,false);
+    
+    vector<base> fres(n);
+    for(ll i=0;i<n;i++)
+    fres[i] = fa[i]*fb[i];
+    fft(fres,true);
+    
+    vector<ll> res(n);
+    for(ll i=0;i<n;i++)
+    {
+        res[i] = (ll)(fres[i].real()+0.5);
+    }
+    
+    return res;
+}
+
+//---------------------------------------------------------------------------//
+
+
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>__fft(without mod)</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

@@ -1,0 +1,74 @@
+<snippet>
+	<content><![CDATA[
+
+//---------------------------------------------------------------------------//
+
+struct bipartite
+{
+    ll n;
+    vector<ll> color;
+    vector<vector<ll> > adj;
+    
+    bipartite(ll n):
+    n(n),color(n),adj(n) {}
+
+    void addEdge(ll u, ll v)
+    {
+        adj[u].pb(v);
+    }
+
+    bool dfs(ll ver,ll val)
+    {
+        if(color[ver]!=-1)
+        {
+            if(color[ver]==val)
+                return true;
+            else
+                return false;
+        }
+        color[ver]=val;
+
+        ll temp = (val+1)%2;
+        FOR(i,0,adj[ver].size())
+        {
+            if(dfs(adj[ver][i],temp)==false)
+            return false;       
+        }
+        return true;
+    }
+
+    pair<bool,pair<ll,ll> > is_bipartite()
+    {
+        FOR(i,0,n)
+        color[i]=-1;
+
+        FOR(i,0,n)
+        {
+            if(color[i]!=-1)
+                continue;
+            else if(dfs(i,0)==false)
+                return mp(false,mp(-1,-1));
+        }
+
+        ll cnt0=0,cnt1=0;
+        FOR(i,0,n)
+        {
+            if(color[i]==0)
+                cnt0++;
+            else if(color[i]==1)
+                cnt1++;
+        }
+
+        return mp(true,mp(cnt0,cnt1));
+    }
+};
+
+//---------------------------------------------------------------------------//
+
+
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>__bipartite</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

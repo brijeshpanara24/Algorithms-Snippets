@@ -1,0 +1,62 @@
+<snippet>
+	<content><![CDATA[
+//---------------------------------------------------------------------//
+
+struct node
+{
+	node * left;
+	node * right;
+	ll cnt;
+	
+	node(node * a,node * b,ll c)
+	{
+		left = a;
+		right = b;
+		cnt = c;
+	}
+};
+
+node * x[NAX];
+node * root = new node(NULL,NULL,0);
+
+node * insert(node * r,ll start,ll end,ll pos,ll val)
+{
+	if(start<=pos && pos<=end)
+	{
+		if(r==NULL)
+			r = new node(NULL,NULL,0);
+		
+		if(start==end)
+		{
+			node * nr = new node(NULL,NULL,0);
+			nr->left = r->left;
+			nr->right = r->right;
+			nr->cnt = r->cnt;
+
+			return nr;
+		}
+		
+		ll mid = (start+end)/2;
+
+		node * n = insert(r->left,start,mid,pos,val);
+		node * m = insert(r->right,mid+1,end,pos,val);
+
+		ll c = 0;
+		if(n!=NULL)
+			c += n->cnt;
+		if(m!=NULL)
+			c += m->cnt;
+		return new node(n,m,c);
+	}
+	return r;
+}
+
+//---------------------------------------------------------------------//
+
+
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>__persistenceSegmentTree</tabTrigger> 
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

@@ -1,0 +1,95 @@
+<snippet>
+	<content><![CDATA[
+
+//---------------------------------------------------------------------------//
+
+//lazy propogation - update on sum and query on sum
+typedef ll sdata;
+
+sdata sa[NAX];
+sdata lazy[4*NAX];
+sdata stree[4*NAX];
+
+void build(ll node,ll start,ll end)
+{
+    lazy[node]=0;
+    if(start==end)
+    {
+        stree[node]=sa[start];
+    }
+    else
+    {
+        ll mid=(start+end)/2;
+        build(2*node+1,start,mid);
+        build(2*node+2,mid+1,end);
+        stree[node] = (stree[2*node+1]+stree[2*node+2]);
+    }
+}
+
+sdata query(ll node,ll start,ll end,ll l,ll r)
+{
+    if(lazy[node]!=0)
+    {
+        stree[node]+=lazy[node]*(end-start+1);
+        if(start!=end)
+        {
+            lazy[2*node+1]+=lazy[node];
+            lazy[2*node+2]+=lazy[node];
+        }
+        lazy[node]=0;
+    }
+
+    if(l>end || start>r)
+        return 0;
+    if(l<=start && end<=r)
+        return stree[node];
+
+    ll mid = (start+end)/2;
+    sdata p1 = query(2*node+1,start,mid,l,r);
+    sdata p2 = query(2*node+2,mid+1,end,l,r);
+    return (p1+p2);
+}
+
+void update(ll node,ll start,ll end,ll l,ll r,ll val)
+{
+    if(lazy[node]!=0)
+    {
+        stree[node]+=lazy[node]*(end-start+1);
+        if(start!=end)
+        {
+            lazy[2*node+1]+=lazy[node];
+            lazy[2*node+2]+=lazy[node];
+        }
+        else if(start==end)
+            sa[start]=stree[node];
+        lazy[node]=0;
+    }
+
+    if(l>end || start>r)
+        return;
+
+    if(l<=start && end<=r)
+    {
+        stree[node]+=val;
+        if(start!=end)
+        {
+            lazy[2*node+1]+=val;
+            lazy[2*node+2]+=val;
+        }
+        return;
+    }
+    ll mid=(start+end)/2;
+    update(2*node+1,start,mid,l,r,val);
+    update(2*node+2,mid+1,end,l,r,val);
+    stree[node]=(stree[2*node+1]+stree[2*node+2]);
+}
+
+//---------------------------------------------------------------------------//
+
+
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>__segmentTree(Lazy)</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

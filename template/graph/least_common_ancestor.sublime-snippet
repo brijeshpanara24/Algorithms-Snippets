@@ -1,0 +1,69 @@
+<snippet>
+	<content><![CDATA[
+//-----------------------------------------------------------------------------------//
+#define LN 23
+
+ll n;
+ll depth[NAX];
+ll pa[NAX][LN];
+vector<ll> adj[NAX];
+
+void dfs1(ll cur, ll prev)
+{
+    pa[cur][0] = prev;
+    depth[cur] = 0;
+    if(prev!=-1)
+    depth[cur] = depth[prev]+1;
+    for(ll i = 0; i < adj[cur].size(); i++)
+    {
+        if(adj[cur][i] != prev)
+        dfs1(adj[cur][i], cur);
+    }
+}
+
+void precompute()
+{
+	dfs1(0, -1);
+    for(ll i = 0; i < LN - 1; i++)
+        for(ll j = 0; j < n; j++)
+            if(pa[j][i] != -1)
+                pa[j][i+1] = pa[pa[j][i]][i];
+}
+
+ll LCA(ll u, ll v)
+{
+    if(depth[u] < depth[v])
+        return LCA(v, u);
+
+    ll diff = depth[u] - depth[v];
+    for(ll i = 0; i < LN; i++)
+    {
+        if(diff & (1LL<<i))
+        {
+            u = pa[u][i];
+        }
+    }
+    if(u != v)
+    {
+        for(ll i = LN - 1; i >= 0; i--)
+        {
+            if(pa[u][i] != pa[v][i])
+            {
+                u = pa[u][i];
+                v = pa[v][i];
+            }
+        }
+        u = pa[u][0];
+    }
+    return u;
+}
+
+//-----------------------------------------------------------------------------------//
+
+
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>__lca</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

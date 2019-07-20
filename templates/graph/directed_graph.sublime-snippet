@@ -1,0 +1,101 @@
+<snippet>
+	<content><![CDATA[
+
+//---------------------------------------------------------------------------//
+
+struct directed_graph
+{
+    ll n;
+    stack<ll> s;
+    vector<ll> component;
+    vector<vector<ll> > adj,radj;
+    vector<bool> visited1,visited2;
+    
+    directed_graph(ll n):
+    n(n),visited1(n),visited2(n),adj(n),radj(n) {}
+
+    void addEdge(ll u, ll v)
+    {
+        adj[u].pb(v);
+        radj[v].pb(u);
+    }
+
+    void init()
+    {
+        FOR(i,0,n)
+        visited1[i]=false,visited2[i]=false;
+    }
+
+    void dfs1(ll ver)
+    {
+        if(visited1[ver]==true)
+            return;
+        visited1[ver]=true;
+
+        FOR(i,0,adj[ver].size())
+        dfs1(adj[ver][i]);
+
+        s.push(ver);
+    }
+
+    vector<ll> tsort()
+    {
+        init();
+
+        FOR(i,0,n)
+        if(visited1[i]==false)
+        dfs1(i);
+        
+        vector<ll> ts;
+        while(s.size()!=0)
+        {
+            ts.pb(s.top());
+            s.pop();
+        }
+        return ts;
+    }    
+
+    void dfs2(ll ver)
+    {
+        if(visited2[ver]==true)
+            return;
+        visited2[ver]=true;
+
+        FOR(i,0,radj[ver].size())
+        dfs2(radj[ver][i]);
+
+        component.pb(ver);
+    }
+    
+    vector<vector<ll> > scc()
+    {
+        init();
+
+        FOR(i,0,n)
+        if(visited1[i]==false)
+        dfs1(i);
+        
+        vector<vector<ll> > scc;
+        while(s.size()!=0)
+        {
+            if(visited2[s.top()]==false)
+            {
+                component.clear();
+                dfs2(s.top());
+                scc.pb(component);    
+            }
+            s.pop();
+        }
+        return scc;
+    }
+};
+
+//---------------------------------------------------------------------------//
+
+
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>__directedGraph</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

@@ -1,0 +1,94 @@
+<snippet>
+	<content><![CDATA[
+//Find maximum matching in bipartite graph
+//1 based indexed Hopcroft-Karp Matching in O(E sqrtV)
+//Add directed edge from set1(1 to N) to set2(N+1 to N+M)
+struct Hopcroft_Karp
+{
+    ll n;
+    vector<vector<ll> > adj;
+    vector<ll> matchL, matchR, dist;
+
+    Hopcroft_Karp(ll n) :
+    n(n), matchL(n+1), matchR(n+1), dist(n+1), adj(n+1) {}
+
+    void addEdge(ll u, ll v)
+    {
+        adj[u].push_back(v);
+    }
+
+    bool bfs()
+    {
+        queue<ll> q;
+        FOR(u,1,n+1)
+        {
+            if(matchL[u]==false)
+            {
+                dist[u]=0;
+                q.push(u);
+            }
+            else
+                dist[u]=INF;
+        }
+        dist[0]=INF;
+
+        while(q.empty()==false)
+        {
+            ll u = q.front();
+            q.pop();
+
+            FOR(i,0,adj[u].size())
+            {
+                ll v = adj[u][i];
+                if(dist[matchR[v]] == INF)
+                {
+                    dist[matchR[v]] = dist[u] + 1;
+                    q.push(matchR[v]);
+                }
+            }
+        }
+
+        return (dist[0]!=INF);
+    }
+
+    bool dfs(ll u)
+    {
+        if(u==0)
+        return true;
+        
+        FOR(i,0,adj[u].size())
+        {
+            ll v = adj[u][i];
+            if(dist[matchR[v]] == dist[u]+1 && dfs(matchR[v]))
+            {
+                matchL[u]=v;
+                matchR[v]=u;
+                return true;
+            }
+        }
+        dist[u]=INF;
+        return false;
+    }
+
+    ll max_matching()
+    {
+        ll matching=0;
+        while(bfs())
+        {
+            FOR(u,1,n+1)
+            {
+                if(matchL[u]==false)
+                if(dfs(u)==true)
+                matching++;
+            }
+        }
+        return matching;
+    }
+};
+
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>__maximumMatching</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

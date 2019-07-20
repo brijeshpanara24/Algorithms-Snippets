@@ -1,0 +1,55 @@
+<snippet>
+	<content><![CDATA[
+
+//---------------------------------------------------------------------------//
+
+struct undirected_graph
+{
+    ll n;
+    vector<bool> visited;
+    vector<vector<ll> > adj;
+    
+    undirected_graph(ll n):
+    n(n),visited(n),adj(n) {}
+
+    void addEdge(ll u, ll v)
+    {
+        adj[u].pb(v);
+    }
+
+    void dfs(ll ver)
+    {
+        if(visited[ver]==true)
+            return;
+        visited[ver]=true;
+    
+        FOR(i,0,adj[ver].size())
+        dfs(adj[ver][i]);
+    }
+
+    ll cc()
+    {
+        FOR(i,0,n)
+        visited[i]=false;
+
+        ll cnt = 0;
+        FOR(i,0,n)
+        {
+            if(visited[i]==true)
+                continue;
+            cnt++;
+            dfs(i);
+        }
+        return cnt;
+    }    
+};
+
+//---------------------------------------------------------------------------//
+
+
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>__undirectedGraph</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

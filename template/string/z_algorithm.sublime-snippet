@@ -1,0 +1,41 @@
+<snippet>
+	<content><![CDATA[
+
+//---------------------------------------------------------------------------//
+
+//return vector of position where pattern matches
+vector<ll> zAlgorithm(string pattern,string message)
+{   
+    string s = pattern+"#"+message;
+
+    ll n=s.size();
+    vector<ll> z(n);
+    for(ll i=1,l=0,r=0;i<n;i++)
+    {
+        if(i<=r)
+            z[i]=min(r-i+1, z[i-l]);
+        while(i+z[i]<n && s[z[i]]==s[i+z[i]])
+            z[i]++;
+        if(i+z[i]-1>r)
+            l=i, r=i+z[i]-1;
+    }
+
+    vector<ll> position;
+    FOR(i,0,n)
+    {
+        if(z[i]==pattern.length())
+            position.pb(i-pattern.length()-1);
+    }
+
+    return position;
+}
+
+//---------------------------------------------------------------------------//
+
+
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>__zAlgorithm</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>
