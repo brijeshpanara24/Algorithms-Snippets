@@ -28,9 +28,8 @@ Adding Build Systems
   In this Build System cpp code will read input from file "input.txt" and will write output to file "output.txt".
   
   Here is the screenshot of how it will looks and works -
-  
-  ![picture alt](http://www.brightlightpictures.com/assets/images/portfolio/thethaw_header.jpg "Title is optional")
-  ![picture alt](http://www.brightlightpictures.com/assets/images/portfolio/thethaw_header.jpg "Title is optional")
+  ![](https://github.com/brijeshpanara24/Algorithms-Snippets/blob/master/screenshots/linux_cpp_1_without_error.png)
+  ![](https://github.com/brijeshpanara24/Algorithms-Snippets/blob/master/screenshots/linux_cpp_1_with_error.png)
   
 * First of all create two files named as "input.txt" and "output.txt" in current working directory(folder containing cpp file).
 
@@ -74,9 +73,9 @@ Adding Build Systems
   
   Here is the screenshot of how it will looks and works -
   
-    * screenshot without error
-    * screenshot with error
-
+  ![](https://github.com/brijeshpanara24/Algorithms-Snippets/blob/master/screenshots/linux_cpp_2_without_error.png)
+  ![](https://github.com/brijeshpanara24/Algorithms-Snippets/blob/master/screenshots/linux_cpp_2_with_error.png)
+  
   * To create build system select 
 
     Tools > Build System > New Build System 
