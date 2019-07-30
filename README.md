@@ -58,7 +58,9 @@ Adding Build Systems
   
   *
     * For Linux
+      
       Copy paste given code and save it with name linux_cpp_1.sublime-build
+      
       ```
       {
         "shell_cmd": "g++ \"${file}\" -o \"${file_path}/${file_base_name}\" && \"${file_path}/${file_base_name}\" <input.txt >output.txt",
@@ -68,7 +70,9 @@ Adding Build Systems
       }
       ```
     * For Windows
+      
       Copy paste given code and save it with name windows_cpp.sublime-build
+      
       ```
       {
         "cmd": ["g++.exe", "${file}", "-o", "${file_base_name}.exe", "&&" , "${file_base_name}.exe<input.txt>output.txt"],
