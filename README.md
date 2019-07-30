@@ -9,6 +9,12 @@ Every competitive programmer faced one question at some point of time that which
 Here is the answer, "Sublime Text 3" is one of the best IDE (might not best but definitely one of the best IDEs after all its all depends on coders choice), so here are some tricks in sublime text 3 for fast and efficient competitive programming. 
 
 # Sublime Text 3 Download And Setup
+* First of all check whether gcc/g++ compiler is installed in your machine or not, and if not then install it.
+  
+  For Linux - https://www.youtube.com/watch?v=mqHdXCMmOXM
+  
+  For Windows- https://www.youtube.com/watch?v=r3FJta3RD0s
+
 * You can download sublime text 3 from https://www.sublimetext.com/3.
 
 * To enable sidebar(sidebar show all open files/folders make navigation between files easy) go to
@@ -22,7 +28,7 @@ Here is the answer, "Sublime Text 3" is one of the best IDE (might not best but 
 Adding Build Systems
 ===================
 
-### Build System - 1 (For Linux Only) ###
+### Build System - 1 ###
  
 * To compile and run cpp code from sublime text 3 itself on click of "ctrl+shift+B" we have to create build system.
   In this Build System cpp code will read input from file "input.txt" and will write output to file "output.txt".
@@ -50,20 +56,37 @@ Adding Build Systems
     
     Tools > Build System > New Build System 
   
-  * Copy paste given code and save it with name linux_cpp_1.sublime-build
-
-    ```
-    {
-      "shell_cmd": "g++ \"${file}\" -o \"${file_path}/${file_base_name}\" && \"${file_path}/${file_base_name}\" <input.txt >output.txt",
-      "file_regex": "^(..[^:]*):([0-9]+):?([0-9]+)?:? (.*)$",
-      "working_dir": "${file_path}",
-      "selector": "source.c, source.c++, source.cpp",
-    }
-    ```
+  *
+    * For Linux
+      Copy paste given code and save it with name linux_cpp_1.sublime-build
+      ```
+      {
+        "shell_cmd": "g++ \"${file}\" -o \"${file_path}/${file_base_name}\" && \"${file_path}/${file_base_name}\" <input.txt >output.txt",
+        "file_regex": "^(..[^:]*):([0-9]+):?([0-9]+)?:? (.*)$",
+        "working_dir": "${file_path}",
+        "selector": "source.c, source.c++, source.cpp",
+      }
+      ```
+    * For Windows
+      Copy paste given code and save it with name windows_cpp.sublime-build
+      ```
+      {
+        "cmd": ["g++.exe", "${file}", "-o", "${file_base_name}.exe", "&&" , "${file_base_name}.exe<input.txt>output.txt"],
+        "shell":true,
+        "working_dir":"$file_path",
+        "selector": "source.c, source.c++, source.cxx, source.cpp", 
+      }
+      ```
 
   * To enable build system select
-
-    Tools > Build System > linux_cpp_1
+    
+    * For Linux 
+      
+      Tools > Build System > linux_cpp_1
+      
+    * For windows
+    
+      Tools > Build System > windows_cpp
 
 * To compile and run code, press "ctrl+shift+B".
 
@@ -109,4 +132,4 @@ Adding Build Systems
 
   To run compiled code 
 
-  Press "ctrl+shift+B" and then select "linux_cpp_2 - Run".  
+  Press "ctrl+shift+B" and then select "linux_cpp_2 - Run".
