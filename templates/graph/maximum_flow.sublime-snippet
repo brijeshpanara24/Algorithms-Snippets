@@ -12,14 +12,14 @@ struct edge
     from(from), to(to), cap(cap), flow(flow), index(index) {}
 };
 
-struct PushRelabel
+struct pushRelabel
 {
     ll n;
     vector<ll> excess;
     vector<ll> height;
     vector<vector<edge> > adj;
     
-    PushRelabel(ll n):
+    pushRelabel(ll n):
     n(n), adj(n), excess(n), height(n) {}
 
     void addEdge(ll from, ll to, ll cap)
