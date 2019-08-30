@@ -1,8 +1,10 @@
 <snippet>
-	<content><![CDATA[
-//Push-Relabel Algorithm for maximum flow, Complexity: O(V^2 √E)
+    <content><![CDATA[
+
+//Push-Relabel Algorithm for Flows, Complexity: O(V^2 √E)
 //To obtain the actual flow values, look at all edges with capacity > 0
 //Zero capacity edges are residual edges
+
 struct edge
 {
     ll from, to, cap, flow, index;
@@ -10,27 +12,29 @@ struct edge
     from(from), to(to), cap(cap), flow(flow), index(index) {}
 };
 
-struct pushRelabel
+struct PushRelabel
 {
     ll n;
     vector<ll> excess;
     vector<ll> height;
     vector<vector<edge> > adj;
     
-    pushRelabel(ll n):
+    PushRelabel(ll n):
     n(n), adj(n), excess(n), height(n) {}
 
     void addEdge(ll from, ll to, ll cap)
     {
-        adj[from].pb(edge(from, to, cap, 0, adj[to].size()));
+        adj[from].push_back(edge(from, to, cap, 0, adj[to].size()));
+        
         if(from==to)
         adj[from].back().index++;
-        adj[to].pb(edge(to, from, 0, 0, adj[from].size()-1));
+        
+        adj[to].push_back(edge(to, from, 0, 0, adj[from].size()-1));
     }
 
     void push(edge &e)
     {
-        ll amt = min(excess[e.from], e.cap - e.flow);
+        ll amt=(ll)min(excess[e.from], (ll)e.cap - e.flow);
         if(height[e.from]<=height[e.to] || amt==0)
             return;
         e.flow += amt;
@@ -41,10 +45,9 @@ struct pushRelabel
 
     void relabel(ll u)
     {
-        ll d = INF;
-        FOR(i,0,adj[u].size())
-        {   
-            edge it = adj[u][i];
+        ll d=2e5;
+        for(auto &it:adj[u])
+        {
             if(it.cap-it.flow>0)
             d=min(d, height[it.to]);
         }
@@ -62,7 +65,7 @@ struct pushRelabel
                 if(!max_height.empty() && height[i] > height[max_height[0]])
                     max_height.clear();
                 if(max_height.empty() || height[i] == height[max_height[0]])
-                    max_height.pb(i);
+                    max_height.push_back(i);
             }
         }
         return max_height;
@@ -74,21 +77,18 @@ struct pushRelabel
         height.assign(n, 0);
         height[source]=n;
         excess[source]=INF;
-
-        FOR(i,0,adj[source].size())
-        push(adj[source][i]);
+        for(auto &it:adj[source])
+        push(it);
 
         vector<ll> current;
         while(!(current = find_max_height_vertices(source, dest)).empty())
         {
-            FOR(i,0,current.size())
+            for(auto i:current)
             {
-                ll idx = current[i];
                 bool pushed=false;
-                FOR(j,0,adj[idx].size())
+                for(auto &e:adj[i])
                 {
-                    edge e = adj[idx][j];
-                    if(excess[idx]==0)
+                    if(excess[i]==0)
                         break;
                     if(e.cap - e.flow>0 && height[e.from] == height[e.to] + 1)
                     {
@@ -98,23 +98,22 @@ struct pushRelabel
                 }
                 if(!pushed)
                 {
-                    relabel(idx);
+                    relabel(i);
                     break;
                 }
             }
         }
 
         ll max_flow=0;
-        FOR(i,0,adj[source].size())
-        max_flow += adj[source][i].flow;
-        
+        for(auto &e:adj[source])
+        max_flow+=e.flow;
+
         return max_flow;
     }
 };
-
 ]]></content>
-	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
-	<tabTrigger>__maximumFlow</tabTrigger>
-	<!-- Optional: Set a scope to limit where the snippet will trigger -->
-	<!-- <scope>source.python</scope> -->
+    <!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+    <tabTrigger>__maximumFlow</tabTrigger>
+    <!-- Optional: Set a scope to limit where the snippet will trigger -->
+    <!-- <scope>source.python</scope> -->
 </snippet>
