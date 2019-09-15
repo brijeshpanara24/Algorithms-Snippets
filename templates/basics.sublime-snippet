@@ -10,7 +10,7 @@ ll pow(ll x, ll y)
     while (y > 0)
     {
         if(y & 1)
-            ans = (ans*x);
+        ans = (ans*x);
         y = y>>1;
         x = (x*x);  
     }
@@ -25,7 +25,7 @@ ll modpow(ll x, ll y, ll p)
     while (y > 0)
     {
         if(y & 1)
-            ans = (ans*x) % p;
+        ans = (ans*x) % p;
         y = y>>1;
         x = (x*x) % p;  
     }
@@ -34,7 +34,7 @@ ll modpow(ll x, ll y, ll p)
 
 //store gcd of a,b in ggg
 //store solution of a*xxx + b*yyy = ggg in xxx,yyy
-// if gcd(a,b)=1 then xxx = a^(-1)(mod b) and yyy = b^(-1)(mod a)
+//if gcd(a,b)=1 then xxx = a^(-1)(mod b) and yyy = b^(-1)(mod a)
 ll xxx,yyy,ggg;
 void extendedEuclid(ll a, ll b)
 {
@@ -61,6 +61,14 @@ ll modinverse(ll a, ll p)
     else
         return -1;
 }
+
+ll add(ll a,ll b,ll m) { return (a+b)%m; }
+
+ll sub(ll a,ll b,ll m) { return (a-b+m)%m; }
+
+ll mult(ll a,ll b,ll m) { return (a*b)%m; }
+
+ll div(ll a,ll b,ll m) { return (a*modinverse(b,m))%m; }
 
 //---------------------------------------------------------------------------//
 
