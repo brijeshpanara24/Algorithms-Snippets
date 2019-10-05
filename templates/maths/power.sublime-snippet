@@ -1,0 +1,18 @@
+<snippet>
+	<content><![CDATA[
+
+ll power(ll x,ll n,ll m = 1000000007){
+	if(n==0)
+        return 1;
+    else if(n%2 == 0)        //n is even
+        return (power((x*x)%m,n/2))%m;
+    else                             //n is bal
+        return (x*power((x*x)%m,(n-1)/2))%m;
+}
+
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>__powerMod</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>
